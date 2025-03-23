@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-// Inline CSS for animations and custom styles (adapted from Events and existing AboutUs styles)
+// Inline CSS for animations and custom styles
 const styles = `
   @keyframes float {
     0% { transform: translateY(0px); }
@@ -42,7 +43,9 @@ const styles = `
   }
 `;
 
-// Animated Photo Gallery with Zoom effect
+// WhatsApp group link (replace with your actual WhatsApp group invite link)
+const whatsappGroupLink = "https://chat.whatsapp.com/GBSbc0HutJM5Ld1f5RSv3F";
+
 function PhotoGallery({ images }) {
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -76,7 +79,6 @@ function PhotoGallery({ images }) {
         ))}
       </div>
       
-      {/* Image Modal */}
       {selectedImage && (
         <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={closeModal}>
           <div className="relative max-w-5xl max-h-[90vh] w-full transform transition duration-300 animate-fadeIn" onClick={e => e.stopPropagation()}>
@@ -182,6 +184,8 @@ function Accordion({ title, children }) {
 }
 
 export default function AboutUs() {
+  const navigate = useNavigate();
+
   const features = [
     { 
       icon: "🚀", 
@@ -215,7 +219,6 @@ export default function AboutUs() {
     }
   ];
 
-  // Inject styles into the document head once on mount
   useEffect(() => {
     const styleSheet = document.createElement('style');
     styleSheet.textContent = styles;
@@ -225,9 +228,12 @@ export default function AboutUs() {
     };
   }, []);
 
+  const handleContactClick = () => {
+    navigate('/contact');
+  };
+
   return (
     <div className="min-h-screen bg-black text-white pb-12 relative overflow-hidden">
-      {/* Animated Background Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(30)].map((_, i) => (
           <div
@@ -247,12 +253,10 @@ export default function AboutUs() {
         ))}
       </div>
 
-      {/* Navbar Container */}
       <div className="navbar-container">
         <Navbar />
       </div>
 
-      {/* Hero Section with simplified gradient */}
       <div className="relative overflow-hidden py-20 px-6 sm:px-10 mb-12">
         <div className="absolute inset-0 bg-black"></div>
         <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('/images/grid-pattern.svg')]"></div>
@@ -267,18 +271,25 @@ export default function AboutUs() {
             Empowering students with knowledge, skills, and opportunities in the world of blockchain and Web3
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="px-8 py-3 rounded-full bg-orange-600 text-white font-medium hover:bg-orange-500 hover:shadow-xl hover:shadow-orange-600/40 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:shadow-none">
+            <a 
+              href={whatsappGroupLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3 rounded-full bg-orange-600 text-white font-medium hover:bg-orange-500 hover:shadow-xl hover:shadow-orange-600/40 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:shadow-none"
+            >
               Join Our Community
-            </button>
-            <button className="px-8 py-3 rounded-full bg-transparent border border-orange-500 text-orange-500 font-medium hover:bg-orange-600/10 hover:text-orange-400 hover:border-orange-400 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0">
-              Explore Projects
+            </a>
+            <button 
+              className="px-8 py-3 rounded-full bg-transparent border border-orange-500 text-orange-500 font-medium hover:bg-orange-600/10 hover:text-orange-400 hover:border-orange-400 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0"
+              onClick={handleContactClick}
+            >
+              Contact Us
             </button>
           </div>
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 sm:px-10 space-y-16 relative z-10">
-        {/* Main Content */}
         <Card>
           <CardHeader>
             <CardTitle>About IBF</CardTitle>
@@ -288,7 +299,6 @@ export default function AboutUs() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-12">
-            {/* Features Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {features.map((feature, index) => (
                 <FeatureCard 
@@ -300,7 +310,6 @@ export default function AboutUs() {
               ))}
             </div>
 
-            {/* Mission & Activities */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <Accordion title="Our Mission">
                 <ul className="space-y-3 text-white">
@@ -357,7 +366,6 @@ export default function AboutUs() {
               </Accordion>
             </div>
 
-            {/* Stats Section */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 py-6">
               <div className="text-center p-4 bg-black rounded-lg border border-orange-600 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-1 hover:border-orange-500 transform">
                 <p className="text-3xl sm:text-4xl font-bold text-orange-500 mb-1 transition-transform duration-300 hover:scale-110 transform">500+</p>
@@ -377,7 +385,6 @@ export default function AboutUs() {
               </div>
             </div>
 
-            {/* Photo Gallery */}
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-orange-500">Club Highlights</h3>
               <PhotoGallery 
@@ -416,17 +423,24 @@ export default function AboutUs() {
               />
             </div>
 
-            {/* Call to Action */}
             <div className="bg-black rounded-xl p-8 border border-orange-600 text-center transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/20 hover:border-orange-500">
               <h3 className="text-2xl font-bold text-orange-500 mb-4">Join the Blockchain Revolution</h3>
               <p className="text-white max-w-2xl mx-auto mb-6">
                 Whether you're a blockchain expert or just getting started, IBF welcomes you to be part of our growing community of innovators shaping the future of Web3.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <button className="px-8 py-3 rounded-full bg-orange-600 text-white font-medium hover:bg-orange-500 hover:shadow-xl hover:shadow-orange-600/40 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:shadow-md">
+                <a 
+                  href={whatsappGroupLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-3 rounded-full bg-orange-600 text-white font-medium hover:bg-orange-500 hover:shadow-xl hover:shadow-orange-600/40 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:shadow-md"
+                >
                   Join IBF Today
-                </button>
-                <button className="px-8 py-3 rounded-full bg-black border border-orange-500 text-orange-500 font-medium hover:bg-orange-600/10 hover:text-orange-400 hover:border-orange-400 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0">
+                </a>
+                <button 
+                  className="px-8 py-3 rounded-full bg-black border border-orange-500 text-orange-500 font-medium hover:bg-orange-600/10 hover:text-orange-400 hover:border-orange-400 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0"
+                  onClick={handleContactClick}
+                >
                   Contact Us
                 </button>
               </div>
@@ -435,9 +449,8 @@ export default function AboutUs() {
         </Card>
       </div>
       <div className='pt-4'>
-      <Footer > </Footer>
+        <Footer />
       </div>
-     
     </div>
-  );
+  ); 
 }

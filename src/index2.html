@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Animated Starry Background</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000000;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        .stars-container {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            perspective: 1000px;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+        
+        .star {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            filter: blur(0.2px);
+        }
+        
+        .star.twinkling {
+            animation: twinkle 4s infinite ease-in-out;
+        }
+        
+        .star.shooting {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1) 20%, rgba(255,255,255,1));
+            border-radius: 0;
+            filter: blur(0px);
+            transform-origin: center right;
+            overflow: visible;
+        }
+        
+        .star.shooting::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            right: 0;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.7);
+        }
+        
+        .star.comet {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 20px 2px rgba(120, 180, 255, 0.8);
+            animation: comet 6s linear infinite;
+            opacity: 0;
+        }
+        
+        .star.comet::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(to left, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            transform: translate(-100%, -50%);
+        }
+        
+        .star.falling {
+            animation: falling 30s linear infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.8;
+                filter: blur(0.2px) brightness(1);
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                filter: blur(0.5px) brightness(1.8);
+                transform: scale(1.2);
+            }
+        }
+        
+        @keyframes falling {
+            from {
+                transform: translateY(-5vh) translateX(0);
+            }
+            to {
+                transform: translateY(105vh) translateX(10vw);
+            }
+        }
+        
+        @keyframes comet {
+            0% {
+                transform: translate(-10vw, -10vh);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(110vw, 50vh);
+                opacity: 0;
+            }
+        }
+        
+        .star.pulsing {
+            animation: pulse 3s infinite alternate ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                transform: scale(1.5);
+                box-shadow: 0 0 20px 4px rgba(255, 255, 255, 0.6);
+            }
+        }
+        
+        .star.moving {
+            animation: moving linear infinite;
+        }
+        
+        @keyframes moving {
+            from {
+                transform: translate3d(0, 0, 0);
+            }
+            to {
+                transform: translate3d(100vw, 0, 0);
+            }
+        }
+        
+        .star.rotating {
+            background: linear-gradient(45deg, #fff, #88f);
+            animation: rotating 8s linear infinite;
+        }
+        
+        @keyframes rotating {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .constellation {
+            position: absolute;
+            opacity: 0;
+            animation: appear 10s ease-in-out forwards;
+            animation-delay: 3s;
+        }
+        
+        .constellation-line {
+            position: absolute;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            transform-origin: left center;
+        }
+        
+        @keyframes appear {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        .meteor-shower {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .meteor {
+            position: absolute;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0), rgba(255,255,255,1));
+            transform: rotate(45deg);
+            animation: meteor 1s linear forwards;
+            opacity: 0;
+        }
+        
+        @keyframes meteor {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) translateX(0) translateY(0);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(45deg) translateX(200vh) translateY(200vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars-container">
+        <div class="stars"></div>
+    </div>
+    <div class="meteor-shower"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const starsContainer = document.querySelector(".stars");
+            const meteorShower = document.querySelector(".meteor-shower");
+            
+            // Star configuration
+            const starsConfig = {
+                background: 600,  // Background stars
+                twinkling: 150,   // Twinkling stars
+                falling: 80,      // Slowly falling stars
+                pulsing: 25,      // Pulsing stars
+                moving: 40,       // Moving stars
+                rotating: 10      // Rotating stars
+            };
+            
+            // Create different types of stars
+            createStars('background', starsConfig.background, 0.5, 1.5);
+            createStars('twinkling', starsConfig.twinkling, 1, 2.5);
+            createStars('falling', starsConfig.falling, 1, 2);
+            createStars('pulsing', starsConfig.pulsing, 2, 3.5);
+            createStars('moving', starsConfig.moving, 1, 2);
+            createStars('rotating', starsConfig.rotating, 2, 4);
+            
+            // Create shooting stars
+            createShootingStarInterval();
+            
+            // Create comets
+            createCometInterval();
+            
+            // Create constellation
+            setTimeout(createConstellation, 2000);
+            
+            // Create meteor shower occasionally
+            setTimeout(startMeteorShowerInterval, 5000);
+            
+            // Function to create stars
+            function createStars(type, count, minSize, maxSize) {
+                for (let i = 0; i < count; i++) {
+                    const star = document.createElement("div");
+                    star.className = `star ${type}`;
+                    
+                    // Position
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    
+                    // Size
+                    const size = Math.random() * (maxSize - minSize) + minSize;
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    
+                    // Custom properties for specific types
+                    if (type === 'twinkling') {
+                        star.style.animationDelay = `${Math.random() * 4}s`;
+                        star.style.animationDuration = `${Math.random() * 3 + 1}s`;
+                    }
+                    
+                    if (type === 'falling') {
+                        star.style.animationDelay = `${Math.random() * 30}s`;
+                        star.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                    }
+                    
+                    if (type === 'pulsing') {
+                        star.style.animationDelay = `${Math.random() * 2}s`;
+                        star.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                    }
+                    
+                    if (type === 'moving') {
+                        star.style.animationDuration = `${Math.random() * 80 + 40}s`;
+                        star.style.animationDelay = `${Math.random() * -40}s`;
+                        star.style.top = `${Math.random() * 100}%`;
+                    }
+                    
+                    if (type === 'rotating') {
+                        star.style.animationDelay = `${Math.random() * 8}s`;
+                    }
+                    
+                    starsContainer.appendChild(star);
+                }
+            }
+            
+            // Create shooting stars
+            function createShootingStarInterval() {
+                setInterval(createShootingStar, 800);
+            }
+            
+            function createShootingStar() {
+                const star = document.createElement("div");
+                star.className = "star shooting";
+                
+                // Position - randomly across the sky
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * (window.innerHeight * 0.7);
+                star.style.left = `${startX}px`;
+                star.style.top = `${startY}px`;
+                
+                // Length and angle
+                const length = Math.random() * 150 + 50;
+                star.style.width = `${length}px`;
+                const angle = Math.random() * 60 - 30; // -30 to +30 degrees
+                star.style.transform = `rotate(${angle}deg)`;
+                
+                starsContainer.appendChild(star);
+                
+                // Animate
+                const duration = Math.random() * 0.7 + 0.3;
+                const keyframes = [
+                    { opacity: 0, transform: `rotate(${angle}deg) translateX(0)` },
+                    { opacity: 1, transform: `rotate(${angle}deg) translateX(${length * 0.2}px)` },
+                    { opacity: 1, transform: `rotate(${angle}deg) translateX(${length * 0.8}px)` },
+                    { opacity: 0, transform: `rotate(${angle}deg) translateX(${length + 50}px)` }
+                ];
+                
+                star.animate(keyframes, {
+                    duration: duration * 1000,
+                    easing: 'ease-in-out',
+                    fill: 'forwards'
+                });
+                
+                // Remove after animation
+                setTimeout(() => {
+                    star.remove();
+                }, duration * 1000 + 100);
+            }
+            
+            // Create comet
+            function createCometInterval() {
+                // Create a comet every 8-15 seconds
+                setInterval(createComet, Math.random() * 7000 + 8000);
+            }
+            
+            function createComet() {
+                const comet = document.createElement("div");
+                comet.className = "star comet";
+                starsContainer.appendChild(comet);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    comet.remove();
+                }, 6000);
+            }
+            
+            // Create constellation
+            function createConstellation() {
+                const constellation = document.createElement("div");
+                constellation.className = "constellation";
+                
+                // Position
+                const centerX = window.innerWidth * (0.3 + Math.random() * 0.4);
+                const centerY = window.innerHeight * (0.3 + Math.random() * 0.4);
+                
+                // Create 6-9 stars in constellation
+                const starCount = Math.floor(Math.random() * 4) + 6;
+                const starPositions = [];
+                
+                // Create stars
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement("div");
+                    star.className = "star";
+                    
+                    // Position around center point
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 150 + 50;
+                    const x = centerX + Math.cos(angle) * distance;
+                    const y = centerY + Math.sin(angle) * distance;
+                    
+                    star.style.left = `${x}px`;
+                    star.style.top = `${y}px`;
+                    star.style.width = `${Math.random() * 1 + 2}px`;
+                    star.style.height = star.style.width;
+                    
+                    // Brighter stars
+                    star.style.boxShadow = `0 0 10px 2px rgba(255, 255, 255, 0.6)`;
+                    
+                    constellation.appendChild(star);
+                    starPositions.push({ x, y });
+                }
+                
+                // Create connecting lines (after positioning stars)
+                for (let i = 0; i < starPositions.length; i++) {
+                    // Connect to 1-2 other stars
+                    const connections = Math.floor(Math.random() * 2) + 1;
+                    
+                    for (let j = 0; j < connections; j++) {
+                        // Find closest unconnected star
+                        const nextStarIndex = (i + j + 1) % starPositions.length;
+                        
+                        const line = document.createElement("div");
+                        line.className = "constellation-line";
+                        
+                        // Calculate line position and length
+                        const start = starPositions[i];
+                        const end = starPositions[nextStarIndex];
+                        
+                        const length = Math.sqrt(
+                            Math.pow(end.x - start.x, 2) + 
+                            Math.pow(end.y - start.y, 2)
+                        );
+                        
+                        const angle = Math.atan2(end.y - start.y, end.x - start.x);
+                        
+                        line.style.width = `${length}px`;
+                        line.style.left = `${start.x}px`;
+                        line.style.top = `${start.y}px`;
+                        line.style.transform = `rotate(${angle}rad)`;
+                        
+                        constellation.appendChild(line);
+                    }
+                }
+                
+                starsContainer.appendChild(constellation);
+            }
+            
+            // Create meteor shower
+            function startMeteorShowerInterval() {
+                // Trigger meteor shower randomly
+                setInterval(() => {
+                    if (Math.random() > 0.7) { // 30% chance
+                        createMeteorShower();
+                    }
+                }, 20000);
+            }
+            
+            function createMeteorShower() {
+                // Create 10-25 meteors in quick succession
+                const meteorCount = Math.floor(Math.random() * 15) + 10;
+                
+                // Start position for the shower
+                const startX = Math.random() * window.innerWidth;
+                const startY = -100; // Above the visible area
+                
+                for (let i = 0; i < meteorCount; i++) {
+                    setTimeout(() => {
+                        createMeteor(startX, startY);
+                    }, i * 200); // Stagger meteor creation
+                }
+            }
+            
+            function createMeteor(startX, startY) {
+                const meteor = document.createElement("div");
+                meteor.className = "meteor";
+                
+                // Position with some variation
+                const x = startX + (Math.random() * 200 - 100);
+                const y = startY + (Math.random() * 100);
+                
+                // Size and style
+                const size = Math.random() * 100 + 50;
+                meteor.style.width = `${size}px`;
+                meteor.style.height = `${Math.random() * 2 + 1}px`;
+                meteor.style.left = `${x}px`;
+                meteor.style.top = `${y}px`;
+                
+                // Speed variation
+                const duration = Math.random() * 0.5 + 0.5;
+                meteor.style.animationDuration = `${duration}s`;
+                
+                meteorShower.appendChild(meteor);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    meteor.remove();
+                }, duration * 1000 + 100);
+            }
+        });
+    </script>
+</body>
+</html>
