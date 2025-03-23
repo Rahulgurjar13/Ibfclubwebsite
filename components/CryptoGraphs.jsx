@@ -35,8 +35,6 @@ const CryptoGraphs = () => {
   const [timeRange, setTimeRange] = useState('7');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [priceChanges, setPriceChanges] = useState({ btc: 0, eth: 0 });
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipMessage, setTooltipMessage] = useState('');
 
   const chartOptions = {
     responsive: true,
@@ -121,23 +119,20 @@ const CryptoGraphs = () => {
       const endTime = Date.now();
       const startTime = endTime - (limit * 24 * 60 * 60 * 1000);
 
-      // Fetch Bitcoin data
       const btcResponse = await axios.get(
         `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=${interval}&limit=${limit}&startTime=${startTime}&endTime=${endTime}`
       );
 
-      // Fetch Ethereum data
       const ethResponse = await axios.get(
         `https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=${interval}&limit=${limit}&startTime=${startTime}&endTime=${endTime}`
       );
 
-      // Fetch market data (using ticker for approximate market cap)
       const marketResponse = await axios.get(
         'https://api.binance.com/api/v3/ticker/24hr?symbols=["BTCUSDT","ETHUSDT"]'
       );
 
-      const btcPrices = btcResponse.data.map(kline => parseFloat(kline[4])); // Closing price
-      const ethPrices = ethResponse.data.map(kline => parseFloat(kline[4])); // Closing price
+      const btcPrices = btcResponse.data.map(kline => parseFloat(kline[4]));
+      const ethPrices = ethResponse.data.map(kline => parseFloat(kline[4]));
 
       const btcChange = ((btcPrices[btcPrices.length - 1] - btcPrices[0]) / btcPrices[0]) * 100;
       const ethChange = ((ethPrices[ethPrices.length - 1] - ethPrices[0]) / ethPrices[0]) * 100;
@@ -147,7 +142,6 @@ const CryptoGraphs = () => {
         eth: ethChange.toFixed(2),
       });
 
-      // Bitcoin chart data
       const btcChartData = {
         labels: btcResponse.data.map(kline => 
           new Date(parseInt(kline[0])).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -171,7 +165,6 @@ const CryptoGraphs = () => {
         }],
       };
 
-      // Ethereum chart data
       const ethChartData = {
         labels: ethResponse.data.map(kline => 
           new Date(parseInt(kline[0])).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -195,7 +188,6 @@ const CryptoGraphs = () => {
         }],
       };
 
-      // Approximate market cap using quote volume (not exact market cap)
       const btcMarketCap = parseFloat(marketResponse.data[0].quoteVolume);
       const ethMarketCap = parseFloat(marketResponse.data[1].quoteVolume);
       const totalMarketCap = btcMarketCap + ethMarketCap;
@@ -219,10 +211,6 @@ const CryptoGraphs = () => {
       setIsLoading(false);
       setIsRefreshing(false);
 
-      setTooltipMessage('Data refreshed successfully!');
-      setShowTooltip(false);
-      setTimeout(() => setShowTooltip(false), 2000);
-
     } catch (error) {
       console.error('Error fetching crypto data:', error);
       setError('Failed to load data. Please try again later.');
@@ -233,7 +221,7 @@ const CryptoGraphs = () => {
 
   useEffect(() => {
     fetchCryptoData();
-    const interval = setInterval(fetchCryptoData, 300000); // Refresh every 5 minutes
+    const interval = setInterval(fetchCryptoData, 300000);
     
     const fontLink = document.createElement('link');
     fontLink.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
@@ -297,36 +285,6 @@ const CryptoGraphs = () => {
     }
 
     .crypto-card:hover::before { opacity: 1; }
-    .tab-button {
-      background: transparent;
-      border: none;
-      color: rgba(255, 255, 255, 0.6);
-      font-weight: 500;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      font-family: 'Poppins', sans-serif;
-      cursor: pointer;
-    }
-
-    .tab-button::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, #FF5722, transparent);
-      transform: translateX(-50%);
-      transition: width 0.3s ease;
-    }
-
-    .tab-button:hover { color: rgba(255, 255, 255, 0.9); }
-    .tab-button:hover::before { width: 80%; }
-    .tab-button.active { color: #FF5722; font-weight: 600; }
-    .tab-button.active::before { width: 90%; background: #FF5722; }
 
     .time-range-button {
       background: rgba(35, 35, 35, 0.8);
@@ -385,26 +343,6 @@ const CryptoGraphs = () => {
       animation: shimmer 2s infinite linear;
       border-radius: 8px;
     }
-
-    .tooltip {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 87, 34, 0.9);
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-weight: 500;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      animation: tooltipSlideUp 0.5s forwards;
-    }
-
-    .tooltip.visible { opacity: 1; }
-    @keyframes tooltipSlideUp { 0% { transform: translate(-50%, 20px); opacity: 0; } 100% { transform: translate(-50%, 0); opacity: 1; } }
 
     .coin-icon {
       width: 32px;
@@ -561,7 +499,7 @@ const CryptoGraphs = () => {
             {btcData ? <Line data={btcData} options={chartOptions} /> : <div className="h-full shimmer-loading"></div>}
           </div>
           <div className="grid grid-cols-3 gap-4 mt-6">
-            <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="bg-black p-4 rounded-lg">
               <div className="text-gray-400 text-sm">Current Price</div>
               <div className="text-white text-xl font-bold mt-1">
                 ${btcData && btcData.datasets[0].data.length > 0 ? 
@@ -569,17 +507,17 @@ const CryptoGraphs = () => {
                   "0.00"}
               </div>
             </div>
-            <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="bg-black p-4 rounded-lg">
               <div className="text-gray-400 text-sm">High</div>
-              <div className="text-white text-xl font-bold mt-1">
+              <div className="text-green-500 text-xl font-bold mt-1">
                 ${btcData && btcData.datasets[0].data.length > 0 ? 
                   Math.max(...btcData.datasets[0].data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 
                   "0.00"}
               </div>
             </div>
-            <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="bg-black p-4 rounded-lg">
               <div className="text-gray-400 text-sm">Low</div>
-              <div className="text-white text-xl font-bold mt-1">
+              <div className="text-red-600 text-xl font-bold mt-1">
                 ${btcData && btcData.datasets[0].data.length > 0 ? 
                   Math.min(...btcData.datasets[0].data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 
                   "0.00"}
@@ -618,7 +556,7 @@ const CryptoGraphs = () => {
             {ethData ? <Line data={ethData} options={chartOptions} /> : <div className="h-full shimmer-loading"></div>}
           </div>
           <div className="grid grid-cols-3 gap-4 mt-6">
-            <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="bg-black p-4 rounded-lg">
               <div className="text-gray-400 text-sm">Current Price</div>
               <div className="text-white text-xl font-bold mt-1">
                 ${ethData && ethData.datasets[0].data.length > 0 ? 
@@ -626,17 +564,17 @@ const CryptoGraphs = () => {
                   "0.00"}
               </div>
             </div>
-            <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="bg-black p-4 rounded-lg">
               <div className="text-gray-400 text-sm">High</div>
-              <div className="text-white text-xl font-bold mt-1">
+              <div className="text-green-500 text-xl font-bold mt-1">
                 ${ethData && ethData.datasets[0].data.length > 0 ? 
                   Math.max(...ethData.datasets[0].data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 
                   "0.00"}
               </div>
             </div>
-            <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="bg-black p-4 rounded-lg">
               <div className="text-gray-400 text-sm">Low</div>
-              <div className="text-white text-xl font-bold mt-1">
+              <div className="text-red-600 text-xl font-bold mt-1">
                 ${ethData && ethData.datasets[0].data.length > 0 ? 
                   Math.min(...ethData.datasets[0].data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 
                   "0.00"}
@@ -748,31 +686,37 @@ const CryptoGraphs = () => {
           </div>
         </div>
 
-        <div className="flex justify-center mb-8 relative z-10">
-          <div className="flex space-x-1 bg-gray-800 rounded-xl p-1 shadow-lg">
-            <button 
-              className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
+        <div className="mb-8 relative z-10 px-4">
+          <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-1 bg-black rounded-xl p-2 sm:p-1 shadow-lg max-w-full overflow-x-auto">
+            <button
+              className={`w-full sm:w-auto text-sm sm:text-base font-medium py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-all duration-300 ${
+                activeTab === 'all'
+                  ? 'text-white font-semibold bg-orange-600'
+                  : 'text-white hover:text-white'
+              }`}
               onClick={() => setActiveTab('all')}
             >
               Dashboard
             </button>
-            <button 
-              className={`tab-button ${activeTab === 'bitcoin' ? 'active' : ''}`}
+            <button
+              className={`w-full sm:w-auto text-sm sm:text-base font-medium py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-all duration-300 ${
+                activeTab === 'bitcoin'
+                  ? 'text-white font-semibold bg-orange-600'
+                  : 'text-white hover:text-white'
+              }`}
               onClick={() => setActiveTab('bitcoin')}
             >
               Bitcoin
             </button>
-            <button 
-              className={`tab-button ${activeTab === 'ethereum' ? 'active' : ''}`}
+            <button
+              className={`w-full sm:w-auto text-sm sm:text-base font-medium py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-all duration-300 ${
+                activeTab === 'ethereum'
+                   ? 'text-white font-semibold bg-orange-600'
+                  : 'text-white hover:text-white'
+              }`}
               onClick={() => setActiveTab('ethereum')}
             >
               Ethereum
-            </button>
-            <button 
-              className={`tab-button ${activeTab === 'market' ? 'active' : ''}`}
-              onClick={() => setActiveTab('market')}
-            >
-              Market
             </button>
           </div>
         </div>
@@ -803,15 +747,6 @@ const CryptoGraphs = () => {
           ) : (
             renderChart()
           )}
-        </div>
-      </div>
-
-      <div className={`tooltip ${showTooltip ? 'visible' : ''}`}>
-        <div className="flex items-center">
-          <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
-          </svg>
-          {tooltipMessage}
         </div>
       </div>
     </div>

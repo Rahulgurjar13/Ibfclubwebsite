@@ -71,11 +71,11 @@ const LandingPage = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <button className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 sm:py-3 px-6 sm:px-8 rounded-md transition-colors w-full sm:w-auto">
-                Download app
+              <button className="px-8 py-3 rounded-full bg-orange-600 text-white font-medium hover:bg-orange-500 hover:shadow-xl hover:shadow-orange-600/40 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:shadow-none">
+                Join IBF Today
               </button>
-              <button className="bg-transparent border border-gray-700 hover:bg-gray-800 text-white font-medium py-2 sm:py-3 px-6 sm:px-8 rounded-md transition-colors w-full sm:w-auto">
-                Talk to sales
+              <button className="px-8 py-3 rounded-full bg-transparent border border-white text-white font-medium hover:bg-orange-600/10 hover:text-white hover:border-orange-400 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0">
+                Contact Us
               </button>
             </div>
           </div>
