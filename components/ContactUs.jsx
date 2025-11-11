@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import React, { useState, useEffect, useRef } from "react";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 // Combined and enhanced CSS (unchanged)
 const styles = `
@@ -28,32 +28,32 @@ const styles = `
   }
 
   .shimmer {
-    background: linear-gradient(90deg, transparent, rgba(255, 87, 34, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
   }
 
   .header-gradient {
-    background: linear-gradient(90deg, #ff5722, #ff8a50, #ff5722);
+    background: linear-gradient(90deg, #00F0FF, #B537F2, #00F0FF);
     background-size: 200% auto;
     animation: gradientFlow 5s ease infinite;
   }
 
   .glow {
-    box-shadow: 0 0 15px rgba(255, 87, 34, 0.5);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
   }
 
   .card {
     background: rgba(15, 15, 18, 0.8);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 87, 34, 0.15);
+    border: 1px solid rgba(0, 240, 255, 0.15);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .card:hover {
     transform: translateY(-5px);
-    border-color: rgba(255, 87, 34, 0.5);
-    box-shadow: 0 10px 30px rgba(255, 87, 34, 0.2);
+    border-color: rgba(0, 240, 255, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);
   }
 
   .form-input {
@@ -63,13 +63,13 @@ const styles = `
   }
 
   .form-input:focus {
-    border-color: #ff5722;
-    box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.25);
+    border-color: #00F0FF;
+    box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.25);
     background: rgba(20, 20, 22, 0.9);
   }
 
   .primary-button {
-    background: linear-gradient(45deg, #ff5722, #ff8a50);
+    background: linear-gradient(45deg, #00F0FF, #B537F2);
     background-size: 200% 200%;
     animation: gradientFlow 5s ease infinite;
     transition: all 0.3s ease;
@@ -96,7 +96,7 @@ const styles = `
   }
 
   .primary-button:hover:not(:disabled) {
-    box-shadow: 0 0 25px rgba(255, 87, 34, 0.5);
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
     transform: translateY(-3px) scale(1.01);
   }
 
@@ -105,8 +105,8 @@ const styles = `
     top: 0;
     z-index: 50;
     background: rgba(0, 0, 0, 0.95);
-    backdrop-blur-md;
-    border-bottom: 1px solid rgba(255, 87, 34, 0.15);
+    backdrop-filter-md;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.15);
   }
 
   .social-icon {
@@ -123,7 +123,7 @@ const styles = `
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 87, 34, 0.8);
+    background: rgba(0, 240, 255, 0.8);
     border-radius: 50%;
     transform: scale(0);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -151,7 +151,7 @@ const styles = `
     height: 2px;
     bottom: -2px;
     left: 0;
-    background: linear-gradient(90deg, transparent, #ff5722, transparent);
+    background: linear-gradient(90deg, transparent, #00F0FF, transparent);
     transform: scaleX(0);
     transform-origin: bottom right;
     transition: transform 0.5s ease;
@@ -168,19 +168,128 @@ const styles = `
 `;
 
 const ContactUs = () => {
+  const canvasRef = useRef(null);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
 
+  // Star animation effect
   useEffect(() => {
-    const styleSheet = document.createElement('style');
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    let w,
+      h,
+      stars = [];
+    const shootingStars = [];
+    let animationId;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    // Generate stars with depth
+    const numStars = 400;
+    for (let i = 0; i < numStars; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.2,
+        o: Math.random(),
+        twinkle: Math.random() * 0.05 + 0.01,
+      });
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, w, h);
+
+      // Background glow
+      const grad = ctx.createRadialGradient(w / 2, h, 0, w / 2, h, h);
+      grad.addColorStop(0, "rgba(20,20,40,0.3)");
+      grad.addColorStop(1, "rgba(0,0,0,1)");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Draw twinkling stars
+      for (let s of stars) {
+        s.o += (Math.random() - 0.5) * s.twinkle;
+        s.o = Math.max(0.1, Math.min(1, s.o));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, 2 * Math.PI);
+        ctx.fillStyle = `rgba(255,255,255,${s.o})`;
+        ctx.fill();
+      }
+
+      // Update and draw shooting stars
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        const sh = shootingStars[i];
+        sh.x += sh.vx;
+        sh.y += sh.vy;
+        sh.life -= 0.01;
+        if (sh.life <= 0) shootingStars.splice(i, 1);
+
+        const tail = ctx.createLinearGradient(
+          sh.x - sh.vx * 20,
+          sh.y - sh.vy * 20,
+          sh.x,
+          sh.y
+        );
+        tail.addColorStop(0, "rgba(255,255,255,0)");
+        tail.addColorStop(1, `rgba(255,255,255,${sh.life})`);
+        ctx.strokeStyle = tail;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(sh.x - sh.vx * 20, sh.y - sh.vy * 20);
+        ctx.lineTo(sh.x, sh.y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(sh.x, sh.y, 2, 0, 2 * Math.PI);
+        ctx.fillStyle = `rgba(255,255,255,${sh.life})`;
+        ctx.fill();
+      }
+
+      animationId = requestAnimationFrame(drawStars);
+    }
+
+    // Create shooting stars occasionally
+    const shootingStarInterval = setInterval(() => {
+      if (Math.random() < 0.3) {
+        const startX = Math.random() * w * 0.5;
+        const startY = Math.random() * h * 0.4;
+        shootingStars.push({
+          x: startX,
+          y: startY,
+          vx: 8 + Math.random() * 4,
+          vy: 8 + Math.random() * 4,
+          life: 1,
+        });
+      }
+    }, 1200);
+
+    drawStars();
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(animationId);
+      clearInterval(shootingStarInterval);
+    };
+  }, []);
+
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
     styleSheet.textContent = styles;
     document.head.appendChild(styleSheet);
     return () => {
@@ -197,7 +306,7 @@ const ContactUs = () => {
     if (formErrors[name]) {
       setFormErrors({
         ...formErrors,
-        [name]: '',
+        [name]: "",
       });
     }
   };
@@ -207,15 +316,15 @@ const ContactUs = () => {
 
   const validateForm = () => {
     const errors = {};
-    if (!formData.name.trim()) errors.name = 'Name is required';
+    if (!formData.name.trim()) errors.name = "Name is required";
     if (!formData.email.trim()) {
-      errors.email = 'Email is required';
+      errors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errors.email = 'Please enter a valid email';
+      errors.email = "Please enter a valid email";
     }
-    if (!formData.subject.trim()) errors.subject = 'Subject is required';
-    if (!formData.message.trim()) errors.message = 'Message is required';
-    
+    if (!formData.subject.trim()) errors.subject = "Subject is required";
+    if (!formData.message.trim()) errors.message = "Message is required";
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -228,10 +337,10 @@ const ContactUs = () => {
         setIsSubmitting(false);
         setSubmitSuccess(true);
         setFormData({
-          name: '',
-          email: '',
-          subject: '',
-          message: '',
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
         });
         setTimeout(() => setSubmitSuccess(false), 5000);
       }, 1500);
@@ -239,52 +348,41 @@ const ContactUs = () => {
   };
 
   const socialLinks = [
-    { 
-      icon: 'M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z', 
-      name: 'Twitter',
-      url: 'https://x.com/IBF_Community?t=33pZSiTWdG5aNDt_4xHKLQ&s=09'
+    {
+      icon: "M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z",
+      name: "Twitter",
+      url: "https://x.com/IBF_Community?t=33pZSiTWdG5aNDt_4xHKLQ&s=09",
     },
-    { 
-      icon: 'M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22', 
-      name: 'GitHub',
-      url: '#'
+    {
+      icon: "M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22",
+      name: "GitHub",
+      url: "#",
     },
-    { 
-      icon: 'M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 2a2 2 0 100 4 2 2 0 000-4z', 
-      name: 'LinkedIn',
-      url: 'https://www.linkedin.com/company/indian-blockchain-fraternity/'
+    {
+      icon: "M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 2a2 2 0 100 4 2 2 0 000-4z",
+      name: "LinkedIn",
+      url: "https://www.linkedin.com/company/indian-blockchain-fraternity/",
     },
-    { 
-      icon: 'M2 2h20v20H2V2zm14 9.37A4 4 0 1 1 12.63 8a4 4 0 0 1 3.37 3.37zm1.5-4.87h.01', 
-      name: 'Instagram',
-      url: 'https://www.instagram.com/ibf.bu/'
+    {
+      icon: "M2 2h20v20H2V2zm14 9.37A4 4 0 1 1 12.63 8a4 4 0 0 1 3.37 3.37zm1.5-4.87h.01",
+      name: "Instagram",
+      url: "https://www.instagram.com/ibf.bu/",
     },
   ];
 
   return (
     <div className="min-h-screen bg-black text-gray-300 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(30)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute animate-[float_4s_ease-in-out_infinite]"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 4}s`,
-              width: '4px',
-              height: '4px',
-              background: 'rgba(255, 87, 34, 0.6)',
-              borderRadius: '50%',
-              boxShadow: '0 0 12px rgba(255, 87, 34, 0.4)',
-            }}
-          />
-        ))}
-      </div>
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at bottom, #020111 0%, #000 100%)",
+        }}
+      />
 
       {/* Navbar */}
-      <div className="navbar-container">
+      <div className="navbar-container relative z-10">
         <Navbar />
       </div>
 
@@ -292,7 +390,7 @@ const ContactUs = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
         {/* Header */}
         <div className="mb-16 text-center">
-          <h1 className=" text-orange-500 bg-clip-text text-4xl md:text-5xl font-bold inline-block mb-4">
+          <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 text-4xl md:text-5xl font-bold inline-block mb-4">
             Contact Us
           </h1>
           <p className="text-gray-400 max-w-2xl mx-auto">
@@ -304,20 +402,32 @@ const ContactUs = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Enhanced Contact Form */}
           <div className="card rounded-2xl p-8">
-            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600 mb-8">
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-8">
               Send Us a Message
             </h2>
 
             {submitSuccess && (
               <div className="bg-green-900/50 border border-green-500/50 text-green-200 px-6 py-4 rounded-lg mb-6 animate-fade-in flex items-center">
                 <div className="mr-4 flex-shrink-0 w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
-                  <svg className="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  <svg
+                    className="w-7 h-7 text-green-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                 </div>
                 <div>
                   <p className="font-semibold">Message sent successfully!</p>
-                  <p className="text-green-300/80 text-sm">We'll get back to you soon.</p>
+                  <p className="text-green-300/80 text-sm">
+                    We'll get back to you soon.
+                  </p>
                 </div>
               </div>
             )}
@@ -325,12 +435,15 @@ const ContactUs = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="relative">
-                  <label htmlFor="name" className={`form-label-animation block text-sm font-medium mb-2 ${
-                    focusedInput === 'name' || formData.name 
-                      ? 'text-orange-400 transform scale-105 origin-left' 
-                      : 'text-gray-300'
-                  }`}>
-                    Name <span className="text-orange-500">*</span>
+                  <label
+                    htmlFor="name"
+                    className={`form-label-animation block text-sm font-medium mb-2 ${
+                      focusedInput === "name" || formData.name
+                        ? "text-cyan-400 transform scale-105 origin-left"
+                        : "text-gray-300"
+                    }`}
+                  >
+                    Name <span className="text-cyan-400">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -339,23 +452,35 @@ const ContactUs = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      onFocus={() => handleFocus('name')}
+                      onFocus={() => handleFocus("name")}
                       onBlur={handleBlur}
                       className={`form-input w-full rounded-lg px-4 py-3 text-white placeholder-gray-500 ${
-                        formErrors.name 
-                          ? 'border-red-500' 
-                          : (focusedInput === 'name' ? 'border-orange-400 glow' : '')
+                        formErrors.name
+                          ? "border-red-500"
+                          : focusedInput === "name"
+                          ? "border-cyan-400 glow"
+                          : ""
                       }`}
                       placeholder="Your name"
                     />
-                    {focusedInput === 'name' && (
+                    {focusedInput === "name" && (
                       <div className="absolute bottom-0 left-0 w-full h-0.5 shimmer"></div>
                     )}
                   </div>
                   {formErrors.name && (
                     <p className="text-red-500 text-sm mt-1 animate-fade-in flex items-center">
-                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      <svg
+                        className="w-4 h-4 mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        />
                       </svg>
                       {formErrors.name}
                     </p>
@@ -363,12 +488,15 @@ const ContactUs = () => {
                 </div>
 
                 <div className="relative">
-                  <label htmlFor="email" className={`form-label-animation block text-sm font-medium mb-2 ${
-                    focusedInput === 'email' || formData.email 
-                      ? 'text-orange-400 transform scale-105 origin-left' 
-                      : 'text-gray-300'
-                  }`}>
-                    Email <span className="text-orange-500">*</span>
+                  <label
+                    htmlFor="email"
+                    className={`form-label-animation block text-sm font-medium mb-2 ${
+                      focusedInput === "email" || formData.email
+                        ? "text-cyan-400 transform scale-105 origin-left"
+                        : "text-gray-300"
+                    }`}
+                  >
+                    Email <span className="text-cyan-400">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -377,23 +505,35 @@ const ContactUs = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      onFocus={() => handleFocus('email')}
+                      onFocus={() => handleFocus("email")}
                       onBlur={handleBlur}
                       className={`form-input w-full rounded-lg px-4 py-3 text-white placeholder-gray-500 ${
-                        formErrors.email 
-                          ? 'border-red-500' 
-                          : (focusedInput === 'email' ? 'border-orange-400 glow' : '')
+                        formErrors.email
+                          ? "border-red-500"
+                          : focusedInput === "email"
+                          ? "border-cyan-400 glow"
+                          : ""
                       }`}
                       placeholder="your.email@example.com"
                     />
-                    {focusedInput === 'email' && (
+                    {focusedInput === "email" && (
                       <div className="absolute bottom-0 left-0 w-full h-0.5 shimmer"></div>
                     )}
                   </div>
                   {formErrors.email && (
                     <p className="text-red-500 text-sm mt-1 animate-fade-in flex items-center">
-                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      <svg
+                        className="w-4 h-4 mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        />
                       </svg>
                       {formErrors.email}
                     </p>
@@ -402,12 +542,15 @@ const ContactUs = () => {
               </div>
 
               <div className="relative">
-                <label htmlFor="subject" className={`form-label-animation block text-sm font-medium mb-2 ${
-                  focusedInput === 'subject' || formData.subject 
-                    ? 'text-orange-400 transform scale-105 origin-left' 
-                    : 'text-gray-300'
-                }`}>
-                  Subject <span className="text-orange-500">*</span>
+                <label
+                  htmlFor="subject"
+                  className={`form-label-animation block text-sm font-medium mb-2 ${
+                    focusedInput === "subject" || formData.subject
+                      ? "text-cyan-400 transform scale-105 origin-left"
+                      : "text-gray-300"
+                  }`}
+                >
+                  Subject <span className="text-cyan-400">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -416,23 +559,35 @@ const ContactUs = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    onFocus={() => handleFocus('subject')}
+                    onFocus={() => handleFocus("subject")}
                     onBlur={handleBlur}
                     className={`form-input w-full rounded-lg px-4 py-3 text-white placeholder-gray-500 ${
-                      formErrors.subject 
-                        ? 'border-red-500' 
-                        : (focusedInput === 'subject' ? 'border-orange-400 glow' : '')
+                      formErrors.subject
+                        ? "border-red-500"
+                        : focusedInput === "subject"
+                        ? "border-cyan-400 glow"
+                        : ""
                     }`}
                     placeholder="What's on your mind?"
                   />
-                  {focusedInput === 'subject' && (
+                  {focusedInput === "subject" && (
                     <div className="absolute bottom-0 left-0 w-full h-0.5 shimmer"></div>
                   )}
                 </div>
                 {formErrors.subject && (
                   <p className="text-red-500 text-sm mt-1 animate-fade-in flex items-center">
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    <svg
+                      className="w-4 h-4 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
                     </svg>
                     {formErrors.subject}
                   </p>
@@ -440,12 +595,15 @@ const ContactUs = () => {
               </div>
 
               <div className="relative">
-                <label htmlFor="message" className={`form-label-animation block text-sm font-medium mb-2 ${
-                  focusedInput === 'message' || formData.message 
-                    ? 'text-orange-400 transform scale-105 origin-left' 
-                    : 'text-gray-300'
-                }`}>
-                  Message <span className="text-orange-500">*</span>
+                <label
+                  htmlFor="message"
+                  className={`form-label-animation block text-sm font-medium mb-2 ${
+                    focusedInput === "message" || formData.message
+                      ? "text-cyan-400 transform scale-105 origin-left"
+                      : "text-gray-300"
+                  }`}
+                >
+                  Message <span className="text-cyan-400">*</span>
                 </label>
                 <div className="relative">
                   <textarea
@@ -453,24 +611,36 @@ const ContactUs = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    onFocus={() => handleFocus('message')}
+                    onFocus={() => handleFocus("message")}
                     onBlur={handleBlur}
                     rows="6"
                     className={`form-input w-full rounded-lg px-4 py-3 text-white placeholder-gray-500 ${
-                      formErrors.message 
-                        ? 'border-red-500' 
-                        : (focusedInput === 'message' ? 'border-orange-400 glow' : '')
+                      formErrors.message
+                        ? "border-red-500"
+                        : focusedInput === "message"
+                        ? "border-cyan-400 glow"
+                        : ""
                     }`}
                     placeholder="Tell us more..."
                   />
-                  {focusedInput === 'message' && (
+                  {focusedInput === "message" && (
                     <div className="absolute bottom-0 left-0 w-full h-0.5 shimmer"></div>
                   )}
                 </div>
                 {formErrors.message && (
                   <p className="text-red-500 text-sm mt-1 animate-fade-in flex items-center">
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    <svg
+                      className="w-4 h-4 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
                     </svg>
                     {formErrors.message}
                   </p>
@@ -481,19 +651,35 @@ const ContactUs = () => {
                 type="submit"
                 disabled={isSubmitting}
                 className={`primary-button w-full py-4 px-8 rounded-lg font-semibold text-white ${
-                  isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+                  isSubmitting ? "opacity-75 cursor-not-allowed" : ""
                 }`}
               >
                 {isSubmitting ? (
                   <>
-                    <svg className="animate-spin mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Sending...
                   </>
                 ) : (
-                  'Send Message'
+                  "Send Message"
                 )}
               </button>
             </form>
@@ -502,43 +688,85 @@ const ContactUs = () => {
           {/* Contact Info & Social */}
           <div className="space-y-8">
             <div className="card rounded-2xl p-8">
-              <h2 className="text-2xl font-bold text-white mb-6">Contact Information</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">
+                Contact Information
+              </h2>
               <div className="space-y-6">
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mr-4">
-                    <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <div className="flex-shrink-0 w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center mr-4">
+                    <svg
+                      className="w-6 h-6 text-cyan-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
                     </svg>
                   </div>
                   <div>
                     <p className="text-lg font-medium text-white">Visit Us</p>
                     <p className="text-gray-400">
-                      Bennett University, Plot No 8-11,<br />
-                      TechZone II, Greater Noida,<br />
+                      Bennett University, Plot No 8-11,
+                      <br />
+                      TechZone II, Greater Noida,
+                      <br />
                       Uttar Pradesh 201310
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mr-4">
-                    <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <div className="flex-shrink-0 w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mr-4">
+                    <svg
+                      className="w-6 h-6 text-purple-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
                     </svg>
                   </div>
                   <div>
                     <p className="text-lg font-medium text-white">Email Us</p>
-                    <a href="mailto:ibf@bennett.edu.in" className="text-orange-400 hover:text-orange-300 highlight-text transition-colors">
+                    <a
+                      href="mailto:ibf@bennett.edu.in"
+                      className="text-cyan-400 hover:text-cyan-300 highlight-text transition-colors"
+                    >
                       ibf@bennett.edu.in
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mr-4">
-                    <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  <div className="flex-shrink-0 w-12 h-12 bg-pink-500/20 rounded-full flex items-center justify-center mr-4">
+                    <svg
+                      className="w-6 h-6 text-pink-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+                      />
                     </svg>
                   </div>
                   <div>
@@ -556,10 +784,16 @@ const ContactUs = () => {
                   <a
                     key={index}
                     href={social.url}
-                    className="social-icon flex items-center justify-center w-12 h-12 rounded-full bg-gray-800/50 border border-orange-500/20 text-orange-500"
+                    className="social-icon flex items-center justify-center w-12 h-12 rounded-full bg-gray-800/50 border border-cyan-500/20 text-cyan-400"
                     aria-label={social.name}
                   >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                    >
                       <path d={social.icon} />
                     </svg>
                   </a>
