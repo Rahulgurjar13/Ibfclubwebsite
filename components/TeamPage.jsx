@@ -117,7 +117,7 @@ const TeamPage = () => {
   const teamMembers = [
     {
       id: 1,
-      name: "Aditya krishna sharma",
+      name: "Shreyash Mishra",
       role: "President",
       image:
         "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
@@ -125,11 +125,19 @@ const TeamPage = () => {
     },
     {
       id: 2,
-      name: "Indresh Agrawal",
+      name: "Archit Gupta",
       role: "Vice President",
       image:
         "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
       bio: "Strategic leader focused on sustainable growth and operational excellence.",
+    },
+    {
+      id: 3,
+      name: "Rahul Gujjar",
+      role: "General Secretary",
+      image:
+        "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
+      bio: "Dedicated to managing club operations and fostering member engagement.",
     },
   ];
 
@@ -151,6 +159,13 @@ const TeamPage = () => {
           borderColor: "border-purple-400",
           textColor: "text-white",
           shadowColor: "shadow-purple-700/20",
+        };
+      } else if (role === "General Secretary") {
+        return {
+          bgColor: "bg-green-500",
+          borderColor: "border-green-400",
+          textColor: "text-white",
+          shadowColor: "shadow-green-700/20",
         };
       } else {
         return {
