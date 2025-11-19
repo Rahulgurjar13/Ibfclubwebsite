@@ -48,9 +48,12 @@ const Footer = () => {
             <div className="flex items-center gap-2">
               <div className="relative">
                 <img
-                  src="https://blockchainweek.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FIBF_logo.b265a8ae.png&w=256&q=75"
-                  className="w-20"
-                  alt="IBF Logo"
+                  src="/images/Gemini_Generated_Image_3nsvae3nsvae3nsv-removebg-preview.png"
+                  className="w-32 h-auto"
+                  alt="BC3 Logo"
+                  style={{
+                    filter: "drop-shadow(0 0 10px rgba(0, 240, 255, 0.3))",
+                  }}
                 />
               </div>
             </div>

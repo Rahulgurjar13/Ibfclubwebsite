@@ -347,7 +347,7 @@ const Events = () => {
       time: "6:30 PM",
       icon: "network-wired",
       tags: ["Cloud", "Workshops"],
-      registerLink: "https://lu.ma/2risnlos",
+      registerLink: "#",
     },
   ];
 

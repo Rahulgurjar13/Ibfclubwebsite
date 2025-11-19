@@ -5,239 +5,187 @@ const JuniorTeamSection = () => {
     tech: [
       {
         id: 1,
-        name: "Arjun Sharma",
-        role: "Full Stack Developer",
+        name: "Vishu Pratap",
+        role: "Tech Team Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Crafting elegant solutions with React, Node.js and modern web technologies.",
+        bio: "Leading technical development and innovation initiatives.",
       },
       {
         id: 2,
-        name: "Priya Nair",
-        role: "Mobile Developer",
+        name: "Anshul Bhathija",
+        role: "Tech Team Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Specializing in cross-platform mobile applications with Flutter and React Native.",
+        bio: "Supporting tech operations and project implementation.",
       },
       {
         id: 3,
-        name: "Rohan Patel",
-        role: "Data Engineer",
+        name: "Saksham Srivastva",
+        role: "Tech Team Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Building robust data pipelines and analytics infrastructure.",
-      },
-      {
-        id: 4,
-        name: "Ananya Gupta",
-        role: "UX/UI Designer",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Creating intuitive and beautiful user experiences focused on accessibility.",
-      },
-    ],
-    marketing: [
-      {
-        id: 5,
-        name: "Vikram Singh",
-        role: "Content Strategist",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Developing engaging content strategies across multiple platforms.",
-      },
-      {
-        id: 6,
-        name: "Neha Kapoor",
-        role: "Social Media Manager",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Growing our brand presence through strategic social media campaigns.",
-      },
-      {
-        id: 7,
-        name: "Karan Malhotra",
-        role: "SEO Specialist",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Optimizing our digital footprint for maximum visibility and engagement.",
-      },
-      {
-        id: 8,
-        name: "Diya Verma",
-        role: "Growth Marketer",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Driving user acquisition through data-driven growth strategies.",
-      },
-    ],
-    management: [
-      {
-        id: 9,
-        name: "Aditya Rao",
-        role: "Project Manager",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Ensuring projects are delivered on time, within scope and budget.",
-      },
-      {
-        id: 10,
-        name: "Shreya Iyer",
-        role: "HR Specialist",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Building our culture and ensuring our team has everything they need to succeed.",
-      },
-      {
-        id: 11,
-        name: "Rahul Khanna",
-        role: "Account Manager",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Managing client relationships and ensuring exceptional service delivery.",
-      },
-      {
-        id: 12,
-        name: "Pooja Desai",
-        role: "Finance Analyst",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Providing financial insights to support strategic business decisions.",
-      },
-    ],
-    pr_outreach: [
-      {
-        id: 13,
-        name: "Sameer Joshi",
-        role: "PR Coordinator",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Building relationships with media and community partners.",
-      },
-      {
-        id: 14,
-        name: "Tara Menon",
-        role: "Event Planner",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Organizing impactful events to promote our mission.",
-      },
-      {
-        id: 15,
-        name: "Nikhil Reddy",
-        role: "Outreach Specialist",
-        image:
-          "https://images.unsplash.com/photo-1360250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Expanding our network through strategic outreach initiatives.",
-      },
-      {
-        id: 16,
-        name: "Riya Chopra",
-        role: "Communications Lead",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Crafting compelling narratives for our public presence.",
+        bio: "Driving technical excellence and team collaboration.",
       },
     ],
     design: [
       {
-        id: 17,
-        name: "Ishita Bose",
-        role: "Graphic Designer",
+        id: 4,
+        name: "Kunal",
+        role: "Design Team Head",
+        image:
+          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
+        bio: "Leading design initiatives and creating stunning visual experiences.",
+      },
+      {
+        id: 5,
+        name: "Swamima",
+        role: "Design Team Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
         bio: "Creating visually stunning designs for our brand identity.",
       },
       {
-        id: 18,
-        name: "Aryan Thakur",
-        role: "Motion Designer",
+        id: 6,
+        name: "Om Bansal",
+        role: "Design Team Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Bringing our concepts to life through animated visuals.",
+        bio: "Bringing creative concepts to life through innovative design.",
+      },
+    ],
+    management: [
+      {
+        id: 7,
+        name: "Varun",
+        role: "Management Head",
+        image:
+          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
+        bio: "Ensuring smooth operations and strategic planning.",
       },
       {
-        id: 19,
-        name: "Sana Kulkarni",
-        role: "Web Designer",
+        id: 8,
+        name: "Manish",
+        role: "Management Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Designing responsive and engaging web interfaces.",
+        bio: "Coordinating team activities and resource management.",
       },
       {
-        id: 20,
-        name: "Kabir Mehra",
-        role: "Brand Designer",
+        id: 9,
+        name: "DONI",
+        role: "Management Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Developing consistent branding across all platforms.",
+        bio: "Supporting organizational efficiency and team coordination.",
       },
     ],
     multimedia: [
       {
-        id: 21,
-        name: "Meera Pillai",
-        role: "Video Editor",
+        id: 10,
+        name: "Yash",
+        role: "Multimedia Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Producing high-quality video content for our audience.",
+        bio: "Producing high-quality multimedia content for our audience.",
       },
       {
-        id: 22,
-        name: "Yash Dubey",
-        role: "Photographer",
+        id: 11,
+        name: "Daksh",
+        role: "Multimedia Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Capturing moments that tell our story visually.",
+        bio: "Creating engaging visual and audio content.",
+      },
+    ],
+    content: [
+      {
+        id: 12,
+        name: "Tanishq",
+        role: "Content Head",
+        image:
+          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
+        bio: "Developing engaging content strategies across multiple platforms.",
       },
       {
-        id: 23,
-        name: "Kavya Jain",
-        role: "Audio Engineer",
+        id: 13,
+        name: "Ashay",
+        role: "Content Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Creating immersive audio experiences for our projects.",
-      },
-      {
-        id: 24,
-        name: "Siddharth Roy",
-        role: "Multimedia Producer",
-        image:
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Overseeing multimedia content creation and delivery.",
+        bio: "Crafting compelling narratives for our audience.",
       },
     ],
     research: [
       {
-        id: 25,
-        name: "Aisha Siddiqui",
-        role: "Cloud Researcher",
+        id: 14,
+        name: "Vedant",
+        role: "Research Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Exploring cutting-edge cloud computing technologies and trends.",
+        bio: "Leading research initiatives and technical documentation.",
+      },
+    ],
+    social_media: [
+      {
+        id: 15,
+        name: "Ayushka Mandal",
+        role: "Social Media Head",
+        image:
+          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
+        bio: "Growing our brand presence through strategic social media campaigns.",
       },
       {
-        id: 26,
-        name: "Omkar Yadav",
-        role: "Data Analyst",
+        id: 16,
+        name: "Shimon Sarin",
+        role: "Social Media Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Analyzing data to inform our strategic decisions.",
+        bio: "Managing social media engagement and content strategy.",
       },
       {
-        id: 27,
-        name: "Tanvi Shah",
-        role: "Market Researcher",
+        id: 17,
+        name: "Ryan",
+        role: "Social Media Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Studying market trends to guide our growth strategy.",
+        bio: "Driving social media growth and community engagement.",
+      },
+    ],
+    pr: [
+      {
+        id: 18,
+        name: "Anushka",
+        role: "PR Head",
+        image:
+          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
+        bio: "Building relationships with media and community partners.",
       },
       {
-        id: 28,
-        name: "Harsh Vardhan",
-        role: "Tech Analyst",
+        id: 19,
+        name: "Lavnaya",
+        role: "PR Co-Head",
         image:
           "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
-        bio: "Evaluating emerging technologies for implementation.",
+        bio: "Managing public relations and brand communications.",
+      },
+    ],
+    sponsorship: [
+      {
+        id: 20,
+        name: "Aaryan",
+        role: "Sponsorship Head",
+        image:
+          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
+        bio: "Securing partnerships and sponsorship opportunities.",
+      },
+      {
+        id: 21,
+        name: "Krishna",
+        role: "Sponsorship Co-Head",
+        image:
+          "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500&q=80",
+        bio: "Building strategic partnerships for club growth.",
       },
     ],
   };
@@ -246,15 +194,15 @@ const JuniorTeamSection = () => {
     const [isHovered, setIsHovered] = useState(false);
 
     const getRoleBadgeColor = (id) => {
-      if (id <= 4) return "bg-cyan-500/20 text-cyan-400 border-cyan-500/50"; // Tech
-      if (id <= 8) return "bg-green-500/20 text-green-400 border-green-500/50"; // Marketing
-      if (id <= 12)
-        return "bg-purple-500/20 text-purple-400 border-purple-500/50"; // Management
-      if (id <= 16)
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/50"; // PR & Outreach
-      if (id <= 20) return "bg-pink-500/20 text-pink-400 border-pink-500/50"; // Design
-      if (id <= 24) return "bg-blue-500/20 text-blue-400 border-blue-500/50"; // Multimedia
-      return "bg-red-500/20 text-red-400 border-red-500/50"; // Research
+      if (id <= 3) return "bg-cyan-500/20 text-cyan-400 border-cyan-500/50"; // Tech Team
+      if (id <= 6) return "bg-pink-500/20 text-pink-400 border-pink-500/50"; // Design Team
+      if (id <= 9) return "bg-purple-500/20 text-purple-400 border-purple-500/50"; // Management
+      if (id <= 11) return "bg-blue-500/20 text-blue-400 border-blue-500/50"; // Multimedia
+      if (id <= 13) return "bg-green-500/20 text-green-400 border-green-500/50"; // Content
+      if (id <= 14) return "bg-red-500/20 text-red-400 border-red-500/50"; // Research
+      if (id <= 17) return "bg-indigo-500/20 text-indigo-400 border-indigo-500/50"; // Social Media
+      if (id <= 19) return "bg-yellow-500/20 text-yellow-400 border-yellow-500/50"; // PR
+      return "bg-orange-500/20 text-orange-400 border-orange-500/50"; // Sponsorship
     };
 
     return (
@@ -345,8 +293,8 @@ const JuniorTeamSection = () => {
         </div>
 
         <div className="mb-20">
-          <TeamHeader heading="Marketing Team" />
-          <TeamGrid teamMembers={teams.marketing} />
+          <TeamHeader heading="Design Team" />
+          <TeamGrid teamMembers={teams.design} />
         </div>
 
         <div className="mb-20">
@@ -355,23 +303,33 @@ const JuniorTeamSection = () => {
         </div>
 
         <div className="mb-20">
-          <TeamHeader heading="PR & Outreach Team" />
-          <TeamGrid teamMembers={teams.pr_outreach} />
-        </div>
-
-        <div className="mb-20">
-          <TeamHeader heading="Design Team" />
-          <TeamGrid teamMembers={teams.design} />
-        </div>
-
-        <div className="mb-20">
           <TeamHeader heading="Multimedia Team" />
           <TeamGrid teamMembers={teams.multimedia} />
         </div>
 
         <div className="mb-20">
+          <TeamHeader heading="Content Team" />
+          <TeamGrid teamMembers={teams.content} />
+        </div>
+
+        <div className="mb-20">
           <TeamHeader heading="Research Team" />
           <TeamGrid teamMembers={teams.research} />
+        </div>
+
+        <div className="mb-20">
+          <TeamHeader heading="Social Media Team" />
+          <TeamGrid teamMembers={teams.social_media} />
+        </div>
+
+        <div className="mb-20">
+          <TeamHeader heading="PR Team" />
+          <TeamGrid teamMembers={teams.pr} />
+        </div>
+
+        <div className="mb-20">
+          <TeamHeader heading="Sponsorship Team" />
+          <TeamGrid teamMembers={teams.sponsorship} />
         </div>
       </div>
     </div>

@@ -35,9 +35,9 @@ const Navbar = () => {
             <Link to="/" className="relative group">
               <span className="absolute -inset-2 rounded-full opacity-0 group-hover:opacity-20 bg-[#00F0FF] transition-opacity duration-300"></span>
               <img
-                src="https://blockchainweek.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FIBF_logo.b265a8ae.png&w=256&q=75"
-                className="h-9 relative transform transition-all duration-300 group-hover:scale-105 group-hover:brightness-110"
-                alt="Cloud Club Logo"
+                src="/images/Gemini_Generated_Image_3nsvae3nsvae3nsv-removebg-preview.png"
+                className="h-16 w-auto relative transform transition-all duration-300 group-hover:scale-105 group-hover:brightness-110"
+                alt="BC3 Cloud Club Logo"
                 style={{
                   filter: "drop-shadow(0 0 10px rgba(0, 240, 255, 0.6))",
                 }}
@@ -80,7 +80,7 @@ const Navbar = () => {
           </div>
 
           <a
-            href="https://lu.ma/2risnlos"
+            href=""
             target="_blank"
             rel="noopener noreferrer"
             className="relative group flex items-center px-5 py-2 rounded-full border-2 border-[#00F0FF] transition-all duration-300 hover:bg-gradient-to-r hover:from-[#00F0FF] hover:to-[#4D77FF]"
@@ -113,9 +113,9 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           <Link to="/" className="relative">
             <img
-              src="https://blockchainweek.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FIBF_logo.b265a8ae.png&w=256&q=75"
-              className="h-8"
-              alt="Cloud Club Logo"
+              src="/images/Gemini_Generated_Image_3nsvae3nsvae3nsv-removebg-preview.png"
+              className="h-12 w-auto"
+              alt="BC3 Cloud Club Logo"
               style={{ filter: "drop-shadow(0 0 10px rgba(0, 240, 255, 0.6))" }}
             />
           </Link>
@@ -123,7 +123,7 @@ const Navbar = () => {
           {/* Mobile Register Button */}
           <div className="flex items-center space-x-2">
             <a
-              href="https://lu.ma/2risnlos"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center text-sm px-3 py-1.5 rounded-full border-2 border-[#00F0FF] text-[#00F0FF] hover:bg-gradient-to-r hover:from-[#00F0FF] hover:to-[#4D77FF] hover:text-black transition-all duration-300"
